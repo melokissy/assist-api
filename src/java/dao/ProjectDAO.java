@@ -25,11 +25,11 @@ public class ProjectDAO {
     //passar tickets null quando criar novo projeto
 //    private static final String PROJECTS = "select p.idProject, t.idTicket, p.name, p.description, p.status, p.createdAt, p.editedAt,tsubject, t.description, t.type FROM project p JOIN ticket t ON t.project = p.idProject ORDER BY p.idProject DESC;";
     private static final String NEW_PROJECT = "INSERT INTO project (name, description, status, createdAt) VALUES (?,?,?,?)";
-    private static final String SEARCH_BY_ID = "SELECT id, name, description, tickets, status, createdAt, editedAt FROM project WHERE id=?";
+    private static final String SEARCH_BY_ID = "SELECT idProject, name, description, tickets, status, createdAt, editedAt FROM project WHERE idProject=?";
     private static final String PROJECTS = "SELECT * FROM project";
-    private static final String EDIT_PROJECT = "UPDATE project SET name = ?, description = ?, tickets = ?, status = ?, editedAt = ? WHERE id = ?";
-    private static final String SEARCH = "SELECT id, name, description, tickets, status, createdAt, editedAt FROM ticket WHERE id=?";
-    private static final String DELETE_PROJECT = "DELETE FROM project WHERE id=?";
+    private static final String EDIT_PROJECT = "UPDATE project SET name = ?, description = ?, tickets = ?, status = ?, editedAt = ? WHERE idProject = ?";
+    private static final String SEARCH = "SELECT idProject, name, description, tickets, status, createdAt, editedAt FROM project WHERE idProject=?";
+    private static final String DELETE_PROJECT = "DELETE FROM project WHERE idProject=?";
     
 
     
@@ -170,26 +170,23 @@ public class ProjectDAO {
         return null;
 
     }    
-    
-    public Project delete(Project project) {
+    public Project delete( Project project){
         Connection conn = null;
         PreparedStatement prepared = null;
-
+        
         try {
             conn = new ConnectionFactory().getConnection();
             prepared = conn.prepareStatement(DELETE_PROJECT);
             prepared.setInt(1, project.getId());
             prepared.executeUpdate();
             return project;
-            
         } catch (Exception ex) {
             System.out.println("[PROJECT DELETE] - " + ex.getMessage());
         } finally {
             try {
-                if (conn != null) {
+                if (conn != null){
                     conn.close();
                 }
-
                 if (prepared != null) {
                     prepared.close();
                 }
@@ -197,8 +194,7 @@ public class ProjectDAO {
                 System.out.println("Error Close connections " + ex.getMessage());
             }
         }
-
-    return project;
+        return project;
     }
-
+    
 }

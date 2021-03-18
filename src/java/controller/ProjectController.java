@@ -35,8 +35,8 @@ public class ProjectController {
          return project;
      }
      
-    public Project delete(Integer idProject) {
-        Project selectedProject = this.pDAO.search(idProject);
-        return this.pDAO.delete(selectedProject);
-    }
+     public Project delete(Integer idProject) {
+         Project selectProject = this.pDAO.search(idProject); 
+         return this.pDAO.delete(selectProject);          
+     }
 }
