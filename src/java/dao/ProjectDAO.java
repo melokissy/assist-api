@@ -52,7 +52,7 @@ public class ProjectDAO {
                 project.setId(rs.getInt(1));            
                 project.setName(rs.getString(2));
                 project.setDescription(rs.getString(3));
-                project.setStatus(rs.getString(5));
+                project.setStatus(rs.getBoolean(5));
                 project.setCreatedAt(rs.getString(6));                
                 project.setEditedAt(rs.getString(7));                
                 list.add(project); 
@@ -92,7 +92,7 @@ public class ProjectDAO {
             prepared.setString(1, project.getName());
             prepared.setString(2, project.getDescription());
             //prepared.setList(3, project.getTickets());
-            prepared.setString(3, project.getStatus());
+            prepared.setBoolean(3, project.getStatus());
             java.util.Date d = new Date();
             prepared.setString(4, d.toString());            
             prepared.executeUpdate();
@@ -141,7 +141,7 @@ public class ProjectDAO {
                 project.setId(rs.getInt(1));
                 project.setName(rs.getString(2));
                 project.setDescription(rs.getString(3));
-                project.setStatus(rs.getString(5));
+                project.setStatus(rs.getBoolean(5));
                 project.setCreatedAt(rs.getString(6));
                 project.setEditedAt(rs.getString(7));
                 return project;

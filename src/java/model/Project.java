@@ -19,7 +19,7 @@ public class Project {
     private String name;
     private String description;
     private List<Ticket> tickets;
-    private String status;
+    private Boolean status;
     private String createdAt; 
     private String editedAt; 
     //private User supervisor;
@@ -27,7 +27,7 @@ public class Project {
     public Project() {
     }
 
-    public Project(int id, String name, String description, List<Ticket> tickets, String status, String createdAt, String editedAt) {
+    public Project(int id, String name, String description, List<Ticket> tickets, Boolean status, String createdAt, String editedAt) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -61,11 +61,11 @@ public class Project {
         this.tickets = tickets;
     }
 
-    public String getStatus() {
+    public Boolean getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Boolean status) {
         this.status = status;
     }
 
