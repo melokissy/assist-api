@@ -53,7 +53,7 @@ public class ProjectDAO {
                 project.setName(rs.getString(2));
                 project.setDescription(rs.getString(3));
                 project.setStatus(rs.getBoolean(5));
-                project.setCreatedAt(rs.getString(6));                
+                project.setCreatedAt(rs.getDate(6));                
                 project.setEditedAt(rs.getString(7));                
                 list.add(project); 
             }
@@ -93,8 +93,8 @@ public class ProjectDAO {
             prepared.setString(2, project.getDescription());
             //prepared.setList(3, project.getTickets());
             prepared.setBoolean(3, project.getStatus());
-            java.util.Date d = new Date();
-            prepared.setString(4, d.toString());            
+           // java.util.Date d = new Date();
+            prepared.setDate(4,  java.sql.Date.valueOf(java.time.LocalDate.now()));            
             prepared.executeUpdate();
             rs = prepared.getGeneratedKeys();
             System.out.println("PASSOU DO INSERT");
@@ -142,7 +142,7 @@ public class ProjectDAO {
                 project.setName(rs.getString(2));
                 project.setDescription(rs.getString(3));
                 project.setStatus(rs.getBoolean(5));
-                project.setCreatedAt(rs.getString(6));
+                project.setCreatedAt(rs.getDate(6));
                 project.setEditedAt(rs.getString(7));
                 return project;
             }
@@ -170,6 +170,7 @@ public class ProjectDAO {
         return null;
 
     }    
+    
     public Project delete( Project project){
         Connection conn = null;
         PreparedStatement prepared = null;

@@ -25,6 +25,13 @@ public class ProjectController {
              throw new Exception("Não foi possível listar projeto");
          }
     }
+        public Project search(Integer id) throws Exception {
+        try {
+             return pDAO.search(id);
+         } catch (Exception e) {
+             throw new Exception("Não foi possível localizar o projeto");
+         }
+    }
     
      public Project insert(Project project) throws Exception {
          try {

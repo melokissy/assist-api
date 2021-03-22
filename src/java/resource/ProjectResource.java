@@ -49,6 +49,18 @@ public class ProjectResource {
                 .build();
     }   
     
+    @GET
+    @Path("/{id}")
+    @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
+    public Response search(@PathParam("id") String id) throws Exception {
+        Project project = this.projectController.search(Integer.parseInt(id));
+       project = this.projectController.insert(project);
+          return Response
+                .ok(Response.Status.FOUND)
+                .entity(project)
+                .build();
+    }   
+    
     @POST
     @Consumes(MediaType.APPLICATION_JSON + ";charset=utf-8")
     @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")

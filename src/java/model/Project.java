@@ -20,14 +20,14 @@ public class Project {
     private String description;
     private List<Ticket> tickets;
     private Boolean status;
-    private String createdAt; 
+    private Date createdAt; 
     private String editedAt; 
     //private User supervisor;
 
     public Project() {
     }
 
-    public Project(int id, String name, String description, List<Ticket> tickets, Boolean status, String createdAt, String editedAt) {
+    public Project(int id, String name, String description, List<Ticket> tickets, Boolean status, Date createdAt, String editedAt) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -86,11 +86,11 @@ public class Project {
         this.editedAt = editedAt;
     }
 
-    public String getCreatedAt() {
+    public Date getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(String createdAt) {
+    public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
     }
 
