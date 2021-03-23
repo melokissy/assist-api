@@ -14,17 +14,19 @@ public class User {
     private String name;
     private String password;
     private String email;
-    private String status;
+    private Boolean status;
     private String userIcon;
+    private String profile; 
 
     public User(){};
 
-    public User(String name, String password, String email, String status, String userIcon) {
+    public User(String name, String password, String email, Boolean status, String userIcon, String profile) {
         this.name = name;
         this.password = password;
         this.email = email;
         this.status = status;
         this.userIcon = userIcon;
+        this.profile = profile; 
     }
 
     public int getId() {
@@ -67,12 +69,20 @@ public class User {
         this.userIcon = userIcon;
     }    
 
-    public String getStatus() {
+    public Boolean getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Boolean status) {
         this.status = status;
+    }
+
+    public String getProfile() {
+        return profile;
+    }
+
+    public void setProfile(String profile) {
+        this.profile = profile;
     }
     
 }

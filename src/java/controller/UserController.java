@@ -20,7 +20,7 @@ public class UserController {
     
      public User insert(User user) throws Exception {
          try {
-             user.setStatus("ativo");
+             user.setStatus(true);
              userDao.insertUser(user);
          } catch (Exception e) {
              throw new Exception("Não foi possivel cadastrar usuário");
