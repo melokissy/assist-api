@@ -9,6 +9,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -25,10 +26,10 @@ public class ProjectDAO {
     //passar tickets null quando criar novo projeto
 //    private static final String PROJECTS = "select p.idProject, t.idTicket, p.name, p.description, p.status, p.createdAt, p.editedAt,tsubject, t.description, t.type FROM project p JOIN ticket t ON t.project = p.idProject ORDER BY p.idProject DESC;";
     private static final String NEW_PROJECT = "INSERT INTO project (name, description, status, createdAt) VALUES (?,?,?,?)";
-    private static final String SEARCH_BY_ID = "SELECT idProject, name, description, tickets, status, createdAt, editedAt FROM project WHERE idProject=?";
-    private static final String PROJECTS = "SELECT * FROM project";
-    private static final String EDIT_PROJECT = "UPDATE project SET name = ?, description = ?, tickets = ?, status = ?, editedAt = ? WHERE idProject = ?";
-    private static final String SEARCH = "SELECT idProject, name, description, tickets, status, createdAt, editedAt FROM project WHERE idProject=?";
+    private static final String SEARCH_BY_ID = "SELECT idProject, name, description, status, createdAt, editedAt FROM project WHERE idProject=?";
+    private static final String PROJECTS = "SELECT * FROM project order by createdAt desc";
+    private static final String EDIT_PROJECT = "UPDATE project SET name = ?, description = ?, status = ?, editedAt = ? WHERE idProject = ?";
+    private static final String SEARCH = "SELECT idProject, name, description, status, createdAt, editedAt FROM project WHERE idProject=?";
     private static final String DELETE_PROJECT = "DELETE FROM project WHERE idProject=?";
     
 
@@ -52,9 +53,9 @@ public class ProjectDAO {
                 project.setId(rs.getInt(1));            
                 project.setName(rs.getString(2));
                 project.setDescription(rs.getString(3));
-                project.setStatus(rs.getBoolean(5));
-                project.setCreatedAt(rs.getDate(6));                
-                project.setEditedAt(rs.getString(7));                
+                project.setStatus(rs.getBoolean(4));
+                project.setCreatedAt(rs.getDate(5));                
+                project.setEditedAt(rs.getDate(6));                
                 list.add(project); 
             }
 
@@ -88,7 +89,7 @@ public class ProjectDAO {
         ResultSet rs = null;
         try {
             conn = new ConnectionFactory().getConnection();
-            prepared = conn.prepareStatement(NEW_PROJECT);            
+            prepared = conn.prepareStatement(NEW_PROJECT,Statement.RETURN_GENERATED_KEYS);            
             prepared.setString(1, project.getName());
             prepared.setString(2, project.getDescription());
             //prepared.setList(3, project.getTickets());
@@ -143,7 +144,7 @@ public class ProjectDAO {
                 project.setDescription(rs.getString(3));
                 project.setStatus(rs.getBoolean(5));
                 project.setCreatedAt(rs.getDate(6));
-                project.setEditedAt(rs.getString(7));
+                project.setEditedAt(rs.getDate(7));
                 return project;
             }
 

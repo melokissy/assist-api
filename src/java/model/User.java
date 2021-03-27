@@ -10,7 +10,7 @@ package model;
  * @author Kissy de Melo
  */
 public class User {
-    private int id;
+    private Integer id;
     private String name;
     private String password;
     private String email;
@@ -29,11 +29,11 @@ public class User {
         this.profile = profile; 
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }    
     

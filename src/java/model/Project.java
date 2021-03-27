@@ -18,20 +18,18 @@ public class Project {
     private int id;
     private String name;
     private String description;
-    private List<Ticket> tickets;
     private Boolean status;
     private Date createdAt; 
-    private String editedAt; 
+    private Date editedAt; 
     //private User supervisor;
 
     public Project() {
     }
 
-    public Project(int id, String name, String description, List<Ticket> tickets, Boolean status, Date createdAt, String editedAt) {
+    public Project(int id, String name, String description, Boolean status, Date createdAt, Date editedAt) {
         this.id = id;
         this.name = name;
         this.description = description;
-        this.tickets = tickets;
         this.status = status;
         this.createdAt = createdAt; 
         this.editedAt = editedAt;
@@ -53,13 +51,6 @@ public class Project {
         this.name = name;
     }
 
-    public List<Ticket> getTickets() {
-        return tickets;
-    }
-
-    public void setTickets(List<Ticket> tickets) {
-        this.tickets = tickets;
-    }
 
     public Boolean getStatus() {
         return status;
@@ -78,11 +69,11 @@ public class Project {
     }
 
 
-    public String getEditedAt() {
+    public Date getEditedAt() {
         return editedAt;
     }
 
-    public void setEditedAt(String editedAt) {
+    public void setEditedAt(Date editedAt) {
         this.editedAt = editedAt;
     }
 

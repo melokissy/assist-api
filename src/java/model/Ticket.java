@@ -16,19 +16,20 @@ public class Ticket {
     private String subject; 
     private String description;
     private User requester;
-    private int type;
-    private int priority;
+    private String type;
+    private String priority;
     private String status; 
     private Project project; 
     private User responsible;
-    private String createdAt;
-    private String editedAt; 
-    private String closedAt; 
+    private Date createdAt;
+    private Date editedAt; 
+    private Date closedAt; 
+    private Date dueDate;
 //    private Date estimativa;
             
     public Ticket(){};
 
-    public Ticket(int id, String subject, String description, User requester, int type, int priority, String status, Project project, User responsible, String createdAt, String editedAt, String closedAt) {
+    public Ticket(int id, String subject, String description, User requester, String type, String priority, String status, Project project, User responsible, Date createdAt, Date editedAt, Date closedAt, Date dueDate) {
         this.id = id;
         this.subject = subject;
         this.description = description;
@@ -41,6 +42,7 @@ public class Ticket {
         this.createdAt = createdAt;
         this.editedAt = editedAt; 
         this.closedAt = closedAt; 
+        this.dueDate = dueDate;
     }
 
     public int getId() {
@@ -75,19 +77,19 @@ public class Ticket {
         this.requester = requester;
     }
 
-    public int getType() {
+    public String getType() {
         return type;
     }
 
-    public void setType(int type) {
+    public void setType(String type) {
         this.type = type;
     }
 
-    public int getPriority() {
+    public String getPriority() {
         return priority;
     }
 
-    public void setPriority(int priority) {
+    public void setPriority(String priority) {
         this.priority = priority;
     }
 
@@ -115,28 +117,36 @@ public class Ticket {
         this.responsible = responsible;
     }
 
-    public String getCreatedAt() {
+    public Date getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(String createdAt) {
+    public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
     }
 
-    public String getEditedAt() {
+    public Date getEditedAt() {
         return editedAt;
     }
 
-    public void setEditedAt(String editedAt) {
+    public void setEditedAt(Date editedAt) {
         this.editedAt = editedAt;
     }
 
-    public String getClosedAt() {
+    public Date getClosedAt() {
         return closedAt;
     }
 
-    public void setClosedAt(String closedAt) {
+    public void setClosedAt(Date closedAt) {
         this.closedAt = closedAt;
+    }
+
+    public Date getDueDate() {
+        return dueDate;
+    }
+
+    public void setDueDate(Date dueDate) {
+        this.dueDate = dueDate;
     }
     
            

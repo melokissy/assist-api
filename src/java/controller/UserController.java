@@ -18,6 +18,9 @@ import model.User;
 public class UserController {
     private final UserDAO userDao = new UserDAO();
     
+    public User getUserById(Integer idUser){
+        return this.userDao.search(idUser);
+    }
      public User insert(User user) throws Exception {
          try {
              user.setStatus(true);
@@ -35,6 +38,7 @@ public class UserController {
              throw new Exception("Não foi possível listar usuários");
          }
     }
+    
     
         public User update(User user) {
         User selectedUser = this.userDao.search(user.getId());
