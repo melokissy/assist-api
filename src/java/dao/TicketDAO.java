@@ -129,15 +129,27 @@ public class TicketDAO {
                 ticket.setId(rs.getInt(1));
                 ticket.setSubject(rs.getString(2));
                 ticket.setDescription(rs.getString(3));
-                ticket.setRequester(rs.getObject(4, User.class));
+                
+                User userRequest = new User();
+                userRequest.setId(rs.getInt(4));
+                ticket.setRequester(userRequest);                
+                
                 ticket.setType(rs.getString(5));
                 ticket.setPriority(rs.getString(6));
                 ticket.setStatus(rs.getString(7));
-                ticket.setProject(rs.getObject(8, Project.class));
-                ticket.setResponsible(rs.getObject(9, User.class));
+                
+                Project project = new Project();
+                project.setId(rs.getInt(8));
+                ticket.setProject(project);                
+                
+                User userResponsible = new User();
+                userResponsible.setId(rs.getInt(9));
+                ticket.setResponsible(userResponsible);
+                
                 ticket.setCreatedAt(rs.getDate(10));
                 ticket.setEditedAt(rs.getDate(11));
                 ticket.setDueDate(rs.getDate(12));
+                
                 return ticket;
             }
 
