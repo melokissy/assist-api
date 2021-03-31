@@ -86,6 +86,7 @@ public class TicketDAO {
                 ticket.setClosedAt(rs.getDate(11));
                 ticket.setDueDate(rs.getDate(12));
                 list.add(ticket);
+                System.out.println("PASSOU NO SELECT DO PROJETO");
             }
 
             return list;
@@ -154,7 +155,7 @@ public class TicketDAO {
             }
 
         } catch (Exception ex) {
-            System.out.println("[SEARCH] - " + ex.getMessage());
+            System.out.println("[SEARCH TICKET] - " + ex.getMessage());
         } finally {
             try {
                 if (conn != null) {

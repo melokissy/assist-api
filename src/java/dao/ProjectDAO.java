@@ -32,7 +32,6 @@ public class ProjectDAO {
     private static final String SEARCH = "SELECT idProject, name, description, status, createdAt, editedAt FROM project WHERE idProject=?";
     private static final String DELETE_PROJECT = "DELETE FROM project WHERE idProject=?";
     
-
     
     public ProjectDAO(){}
     
@@ -92,9 +91,7 @@ public class ProjectDAO {
             prepared = conn.prepareStatement(NEW_PROJECT,Statement.RETURN_GENERATED_KEYS);            
             prepared.setString(1, project.getName());
             prepared.setString(2, project.getDescription());
-            //prepared.setList(3, project.getTickets());
             prepared.setBoolean(3, project.getStatus());
-           // java.util.Date d = new Date();
             prepared.setDate(4,  java.sql.Date.valueOf(java.time.LocalDate.now()));            
             prepared.executeUpdate();
             rs = prepared.getGeneratedKeys();
@@ -142,14 +139,14 @@ public class ProjectDAO {
                 project.setId(rs.getInt(1));
                 project.setName(rs.getString(2));
                 project.setDescription(rs.getString(3));
-                project.setStatus(rs.getBoolean(5));
-                project.setCreatedAt(rs.getDate(6));
-                project.setEditedAt(rs.getDate(7));
+                project.setStatus(rs.getBoolean(4));
+                project.setCreatedAt(rs.getDate(5));
+                project.setEditedAt(rs.getDate(6));
                 return project;
             }
 
         } catch (Exception ex) {
-            System.out.println("[SEARCH] - " + ex.getMessage());
+            System.out.println("[SEARCH PROJECT] - " + ex.getMessage());
         } finally {
             try {
                 if (conn != null) {

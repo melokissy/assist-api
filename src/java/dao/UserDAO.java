@@ -94,7 +94,7 @@ public class UserDAO{
             }
 
         } catch (Exception ex) {
-            System.out.println("[SEARCH] - " + ex.getMessage());
+            System.out.println("[SEARCH USER] - " + ex.getMessage());
         } finally {
             try {
                 if (conn != null) {

@@ -39,17 +39,29 @@ public class TicketController {
         if (!tickets.isEmpty()) {
             for (int i = 0; i < tickets.size(); i++) {
                 if (tickets.get(i).getRequester().getId() != null) {
-                    User usuario = userController.getUserById(tickets.get(i).getRequester().getId());
-                    usuario.setPassword("");
-                    tickets.get(i).setRequester(usuario);
+                    try{
+                        User usuario = userController.getUserById(tickets.get(i).getRequester().getId());
+                        usuario.setPassword("");
+                        tickets.get(i).setRequester(usuario);
+                    }
+                    catch (Exception e){
+                        System.out.println("[NAO LOCALIZOU O REQUESTER] - " + e.getMessage());
+                    }                   
+                    
                 }
-                if (tickets.get(i).getResponsible().getId() > 0) {
-                    User usuario = userController.getUserById(tickets.get(i).getResponsible().getId());
-                    usuario.setPassword("");
-                    tickets.get(i).setResponsible(usuario);
-                } else if (tickets.get(i).getResponsible().getId() == 0 || tickets.get(i).getResponsible().getId() == null) {
-                    User usuario = new User();
-                    tickets.get(i).setResponsible(usuario);
+                try{
+                    if (tickets.get(i).getResponsible().getId() > 0) {
+                        User usuario = userController.getUserById(tickets.get(i).getResponsible().getId());
+                        usuario.setPassword("");
+                        tickets.get(i).setResponsible(usuario);
+                    } else if (tickets.get(i).getResponsible().getId() == 0 || tickets.get(i).getResponsible().getId() == null) {
+                       User usuario = new User();
+                       tickets.get(i).setResponsible(usuario);
+                    }
+                } 
+                catch (Exception e){
+                    System.out.println("[ TICKET CONTROLLER - VALIDACAO DO RESPONSIBLE] - " + e.getMessage());
+
                 }
 
             }
