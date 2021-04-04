@@ -7,6 +7,7 @@ package resource;
 
 import controller.TicketController;
 import controller.UserController;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -21,6 +22,7 @@ import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
+import model.Counter;
 import model.Ticket;
 import model.User;
 
@@ -50,6 +52,31 @@ public class TicketResource {
         return Response
                 .ok()
                 .entity(list)
+                .build();
+    } 
+    
+    @GET
+    @Path("/tickets-vencidos")
+    @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
+    public Response ticketsVencidos() throws Exception {
+        List<Ticket> tickets = this.ticketController.ticketsVencidos();
+        GenericEntity<List<Ticket>> list = new GenericEntity<List<Ticket>>(tickets) {};
+        return Response
+                .ok()
+                .entity(list)
+                .build();
+    } 
+    
+    @GET
+    @Path("/tickets-pendentes")
+    @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
+    public Response totalPendentes() throws Exception {        
+        List<Counter> contadorTickets = new ArrayList<>();
+        contadorTickets.add(this.ticketController.contaTickets());
+        GenericEntity<List<Counter>> contador = new GenericEntity<List<Counter>>(contadorTickets) {};
+        return Response
+                .ok()
+                .entity(contador)
                 .build();
     }       
     
