@@ -6,6 +6,13 @@
 package controller;
 
 import dao.TicketDAO;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.Month;
+import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
+import java.time.temporal.Temporal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Formatter;
 import java.util.List;
@@ -102,8 +109,7 @@ public class TicketController {
 
         return tickets;
     }
-    
-    
+
     public Ticket update(Ticket ticket) {
         Ticket selectedTicket = this.tDAO.search(ticket.getId());
 
@@ -156,7 +162,6 @@ public class TicketController {
         return qtdConcluido;
     }
 
-        
     public Counter contaTickets() {
         Counter contadorTickets = new Counter();
         contadorTickets.setQtdConcluidos(this.totalConcluidos().toString());
@@ -165,6 +170,27 @@ public class TicketController {
         contadorTickets.setQtdTotal(this.totalTickets().toString());
 
         return contadorTickets;
+    }
+    
+    public LocalDate convertToLocalDateViaMilisecond(Date dateToConvert) {
+        return Instant.ofEpochMilli(dateToConvert.getTime())
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate();
+    }
+
+    public List<Ticket> ticketsAVencer() {
+        List<Ticket> ticketsUnsolved = tDAO.ticketsAVencer();
+        List<Ticket> ticketsAVencer = new ArrayList<>();
+        for (Ticket ticket : ticketsUnsolved) {
+            LocalDate localDatetime = this.convertToLocalDateViaMilisecond(ticket.getDueDate());
+            LocalDate dueDateCasting = LocalDate.of(localDatetime.getYear(), localDatetime.getMonth(), localDatetime.getDayOfMonth());
+            Long diferencaEmDias = ChronoUnit.DAYS.between(LocalDate.now(), dueDateCasting);
+            System.out.println("diferencaEmDias: " +diferencaEmDias);
+            if (diferencaEmDias <= 3 && diferencaEmDias >= 0) {
+                ticketsAVencer.add(ticket);
+            }
+        }
+        return ticketsAVencer;
     }
 
 }

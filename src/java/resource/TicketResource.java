@@ -67,6 +67,18 @@ public class TicketResource {
                 .build();
     } 
     
+     @GET
+    @Path("/tickets-vencendo")
+    @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
+    public Response ticketsAvencer() throws Exception {
+        List<Ticket> tickets = this.ticketController.ticketsAVencer();
+        GenericEntity<List<Ticket>> list = new GenericEntity<List<Ticket>>(tickets) {};
+        return Response
+                .ok()
+                .entity(list)
+                .build();
+    } 
+    
     @GET
     @Path("/tickets-pendentes")
     @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")

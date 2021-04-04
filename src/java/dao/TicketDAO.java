@@ -45,6 +45,19 @@ public class TicketDAO {
             + "                t.closedAt,  "
             + "                t.dueDate "
             + "                FROM ticket t WHERE dueDate <= CURRENT_DATE() AND status != 'resolvido' ORDER BY dueDate ASC ";
+    private static final String AVENCER_TICKET = "SELECT distinct t.idTicket, "
+            + "                t.subject,  "
+            + "                t.description,  "
+            + "                t.requester_id,  "
+            + "                t.type,  "
+            + "                t.priority,  "
+            + "                t.status,  "
+            + "                t.responsible_id,  "
+            + "                t.createdAt,  "
+            + "                t.editedAt,  "
+            + "                t.closedAt,  "
+            + "                t.dueDate "
+            + "                FROM ticket t WHERE status != 'resolvido' ORDER BY dueDate ASC ";
     private static final String APROPRIADO_TICKET = "select count(*) from ticket where responsible_id is not null AND responsible_id !=0 AND MONTH(createdAt) = MONTH(CURRENT_DATE())";
     private static final String TOTAL_TICKET = "select count(*) from ticket where MONTH(createdAt) = MONTH(CURRENT_DATE()) ";
     private static final String TICKETS = "SELECT distinct t.idTicket, "
@@ -545,4 +558,66 @@ public class TicketDAO {
         return null;
     }
      
+     public List<Ticket> ticketsAVencer() {        
+        Connection conn = null;
+        List<Ticket> list = null;
+        PreparedStatement prepared = null;
+        ResultSet rs = null;
+
+        try {
+            conn = new ConnectionFactory().getConnection();
+            list = new ArrayList();
+            prepared = conn.prepareStatement(AVENCER_TICKET);
+            rs = prepared.executeQuery();
+
+            while (rs.next()) {
+                Ticket ticket = new Ticket();
+                ticket.setId(rs.getInt(1));
+                ticket.setSubject(rs.getString(2));
+                ticket.setDescription(rs.getString(3));
+
+                //id e nome do usuario solicitante
+                User userRequest = new User();
+                userRequest.setId(rs.getInt(4));
+                ticket.setRequester(userRequest);
+
+                ticket.setType(rs.getString(5));
+                ticket.setPriority(rs.getString(6));
+                ticket.setStatus(rs.getString(7));
+
+                //pega o ususario responsavel
+                User userResponsible = new User();
+                userResponsible.setId(rs.getInt(8));
+                ticket.setResponsible(userResponsible);
+
+                ticket.setCreatedAt(rs.getDate(9));
+                ticket.setEditedAt(rs.getDate(10));
+                ticket.setClosedAt(rs.getDate(11));
+                ticket.setDueDate(rs.getDate(12));
+                list.add(ticket);
+            }
+            System.out.println("PASSOU NO SELECT DO TICKTES A VENCER");
+            return list;
+        } catch (Exception e) {
+            System.out.println("ERROR LISTA TICKETS VENCIDOS - " + e.getMessage());
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+
+                if (prepared != null) {
+                    prepared.close();
+                }
+
+                if (rs != null) {
+                    rs.close();
+                }
+            } catch (SQLException ex) {
+                System.out.println("Error close connections" + ex.getMessage());
+            }
+        }
+
+        return null;
+    }
 }
