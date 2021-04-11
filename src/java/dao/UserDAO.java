@@ -160,7 +160,7 @@ public class UserDAO{
         
     }
     
-     public User update(User user) {
+    public User update(User user) {
         Connection conn = null;
         PreparedStatement prepared = null;
 
@@ -168,11 +168,12 @@ public class UserDAO{
             conn = new ConnectionFactory().getConnection();
             prepared = conn.prepareStatement(EDIT_USER);
             prepared.setString(1, user.getName());
-            prepared.setString(2, user.getPassword());
-            prepared.setString(3, user.getEmail());
+            prepared.setString(2, user.getEmail());
+            prepared.setString(3, user.getPassword());
             prepared.setBoolean(4, user.getStatus());
             prepared.setString(5, user.getUserIcon());
             prepared.setString(6, user.getProfile());
+            prepared.setInt(7, user.getId()); 
             prepared.executeUpdate();
             return user;
         } catch (Exception ex) {

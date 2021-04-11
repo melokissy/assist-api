@@ -51,6 +51,19 @@ public class UserResource {
                 .build();
     }       
     
+    @GET
+    @Path("/{id}")
+    @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
+    public Response userById(@PathParam("id") int id) throws Exception {
+        User user = this.userController.getUserById(id);
+        GenericEntity<User> list = new GenericEntity<User>(user) {};
+        return Response
+                .ok()
+                .entity(list)
+                .build();
+    }  
+
+    
     @POST
     @Consumes(MediaType.APPLICATION_JSON + ";charset=utf-8")
     @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")

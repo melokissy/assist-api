@@ -73,6 +73,9 @@ public class TicketDAO {
             + "                t.closedAt,  "
             + "                t.dueDate "
             + "                FROM ticket t order by createdAt desc";
+    private static final String TOTAL_TK_USER = "SELECT count(*), t.responsible_id, u.name FROM ticket t  \n" 
+            + "inner join user u on t.responsible_id = u.idUser\n" 
+            + "where t.responsible_id is not null group by t.responsible_id ";
 
     public TicketDAO() {
     }
@@ -620,4 +623,6 @@ public class TicketDAO {
 
         return null;
     }
+     
+
 }
