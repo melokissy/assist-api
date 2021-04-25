@@ -16,18 +16,18 @@ import model.Ticket;
  */
 public class ProjectController {
     
-    private final ProjectDAO pDAO = new ProjectDAO();
+    private final ProjectDAO projectDao = new ProjectDAO();
     
     public List<Project> projects() throws Exception {
         try {
-             return pDAO.projects();
+             return projectDao.projects();
          } catch (Exception e) {
              throw new Exception("Não foi possível listar projeto");
          }
     }
         public Project search(Integer id) throws Exception {
         try {
-             return pDAO.search(id);
+             return projectDao.search(id);
          } catch (Exception e) {
              throw new Exception("Não foi possível localizar o projeto");
          }
@@ -35,7 +35,16 @@ public class ProjectController {
     
      public Project insert(Project project) throws Exception {
          try {
-             pDAO.insertProject(project);
+             projectDao.insertProject(project);
+         } catch (Exception e) {
+             throw new Exception("Não foi possivel cadastrar projeto");
+         }
+         return project;
+     }
+     
+     public Project update(Project project) throws Exception{
+           try {
+             projectDao.update(project);
          } catch (Exception e) {
              throw new Exception("Não foi possivel cadastrar projeto");
          }
@@ -43,7 +52,7 @@ public class ProjectController {
      }
      
      public Project delete(Integer idProject) {
-         Project selectProject = this.pDAO.search(idProject); 
-         return this.pDAO.delete(selectProject);          
+         Project selectProject = this.projectDao.search(idProject); 
+         return this.projectDao.delete(selectProject);          
      }
 }
