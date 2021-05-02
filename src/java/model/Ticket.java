@@ -13,6 +13,7 @@ import java.util.Date;
  */
 public class Ticket {
     private int id;
+    private String number; 
     private String subject; 
     private String description;
     private User requester;
@@ -29,8 +30,9 @@ public class Ticket {
             
     public Ticket(){};
 
-    public Ticket(int id, String subject, String description, User requester, String type, String priority, String status, Project project, User responsible, Date createdAt, Date editedAt, Date closedAt, Date dueDate) {
+    public Ticket(int id, String subject, String description, User requester, String type, String priority, String status, Project project, User responsible, Date createdAt, Date editedAt, Date closedAt, Date dueDate, String number) {
         this.id = id;
+        this.number = number;
         this.subject = subject;
         this.description = description;
         this.requester = requester;
@@ -148,7 +150,12 @@ public class Ticket {
     public void setDueDate(Date dueDate) {
         this.dueDate = dueDate;
     }
-    
-           
-    
+
+    public String getNumber() {
+        return number;
+    }
+
+    public void setNumber(String number) {
+        this.number = number;
+    }    
 }

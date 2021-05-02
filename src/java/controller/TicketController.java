@@ -31,11 +31,16 @@ public class TicketController {
     UserController userController = new UserController();
 
     public Ticket insert(Ticket ticket) throws Exception {
-        // id gerado, 
-        // descrição, assunto, tipo, prioridade, status, solicitante, createdAt, dataVencimento, id_projeto, id_solcitante e id_Responsable
-
         try {
+            int contador = tDAO.countTickets()+1; 
+            if (contador < 100){
+                ticket.setNumber("TICKET-" +"00"+contador);
+            }
+            if (contador > 100){
+                ticket.setNumber("TICKET-" +"0"+contador);
+            }
             tDAO.insertTicket(ticket);
+            
         } catch (Exception e) {
             throw new Exception("Não foi possivel cadastrar ticket");
         }
@@ -171,7 +176,7 @@ public class TicketController {
 
         return contadorTickets;
     }
-    
+
     public LocalDate convertToLocalDateViaMilisecond(Date dateToConvert) {
         return Instant.ofEpochMilli(dateToConvert.getTime())
                 .atZone(ZoneId.systemDefault())
@@ -185,7 +190,7 @@ public class TicketController {
             LocalDate localDatetime = this.convertToLocalDateViaMilisecond(ticket.getDueDate());
             LocalDate dueDateCasting = LocalDate.of(localDatetime.getYear(), localDatetime.getMonth(), localDatetime.getDayOfMonth());
             Long diferencaEmDias = ChronoUnit.DAYS.between(LocalDate.now(), dueDateCasting);
-            System.out.println("diferencaEmDias: " +diferencaEmDias);
+            System.out.println("diferencaEmDias: " + diferencaEmDias);
             if (diferencaEmDias <= 3 && diferencaEmDias >= 0) {
                 ticketsAVencer.add(ticket);
             }
