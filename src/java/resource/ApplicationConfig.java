@@ -24,6 +24,7 @@ public class ApplicationConfig extends Application {
 
     private void addRestResourceClasses(Set<Class<?>> resources) {
         resources.add(provider.CORSFilter.class);
+        resources.add(resource.CommentResource.class);
         resources.add(resource.ProjectResource.class);
         resources.add(resource.TicketResource.class);
         resources.add(resource.UserResource.class);

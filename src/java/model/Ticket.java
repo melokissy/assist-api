@@ -6,6 +6,7 @@
 package model;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  *
@@ -26,11 +27,12 @@ public class Ticket {
     private Date editedAt; 
     private Date closedAt; 
     private Date dueDate;
+    private List<Comment> comment; 
 //    private Date estimativa;
             
     public Ticket(){};
-
-    public Ticket(int id, String subject, String description, User requester, String type, String priority, String status, Project project, User responsible, Date createdAt, Date editedAt, Date closedAt, Date dueDate, String number) {
+    
+      public Ticket(int id, String number, String subject, String description, User requester, String type, String priority, String status, Project project, User responsible, Date createdAt, Date editedAt, Date closedAt, Date dueDate) {
         this.id = id;
         this.number = number;
         this.subject = subject;
@@ -42,9 +44,27 @@ public class Ticket {
         this.project = project;
         this.responsible = responsible;
         this.createdAt = createdAt;
-        this.editedAt = editedAt; 
-        this.closedAt = closedAt; 
+        this.editedAt = editedAt;
+        this.closedAt = closedAt;
         this.dueDate = dueDate;
+    }
+
+    public Ticket(int id, String number, String subject, String description, User requester, String type, String priority, String status, Project project, User responsible, Date createdAt, Date editedAt, Date closedAt, Date dueDate, List<Comment> comment) {
+        this.id = id;
+        this.number = number;
+        this.subject = subject;
+        this.description = description;
+        this.requester = requester;
+        this.type = type;
+        this.priority = priority;
+        this.status = status;
+        this.project = project;
+        this.responsible = responsible;
+        this.createdAt = createdAt;
+        this.editedAt = editedAt;
+        this.closedAt = closedAt;
+        this.dueDate = dueDate;
+        this.comment = comment;
     }
 
     public int getId() {
@@ -158,4 +178,14 @@ public class Ticket {
     public void setNumber(String number) {
         this.number = number;
     }    
+
+    public List<Comment> getComment() {
+        return comment;
+    }
+
+    public void setComment(List<Comment> comment) {
+        this.comment = comment;
+    }
+    
+    
 }

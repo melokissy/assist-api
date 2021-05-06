@@ -12,6 +12,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import model.Comment;
 import model.Project;
 import model.Ticket;
 import model.User;
@@ -23,9 +24,9 @@ import model.User;
 public class TicketDAO {
 
     private static final String NEW_TICKET = "INSERT INTO ticket (subject, description, requester_id, type, priority, status, project_id, createdAt,dueDate,number) VALUES (?,?,?,?,?,?,?,?,?,?)";
-    private static final String SEARCH_BY_ID = "SELECT idTicket, subject, description, requester_id, type, priority,status,project_id,responsible_id, createdAt, editedAt,dueDate FROM ticket WHERE idTicket=?";
+    //private static final String SEARCH_BY_ID = "SELECT idTicket, subject, description, requester_id, type, priority,status,project_id,responsible_id, createdAt, editedAt,dueDate FROM ticket WHERE idTicket=?";
     private static final String EDIT_TICKET = "UPDATE ticket SET subject = ?, description = ?, requester_id = ?, type = ?, priority = ?, status = ?, project_id = ?, responsible_id = ?, editedAt = ?, dueDate=? WHERE idTicket = ?";
-    private static final String SEARCH = "SELECT idTicket, subject , description, requester_id, type, priority, status, project_id, responsible_id, createdAt, editedAt,dueDate FROM ticket WHERE idTicket=?";
+    private static final String SEARCH = "SELECT idTicket, subject , description, requester_id, type, priority, status, project_id, responsible_id, createdAt, editedAt,dueDate, closedAt, number FROM ticket WHERE idTicket=?";
     private static final String DELETE_TICKET = "DELETE FROM ticket WHERE idTicket=?";
     private static final String PENNDING_TICKET = "select count(*) from ticket where status = 'Pendente' AND MONTH(createdAt) = MONTH(CURRENT_DATE())";
     private static final String RESOLVIDO_TICKET = "select count(*) from ticket where status = 'Resolvido' AND MONTH(createdAt) = MONTH(CURRENT_DATE())";
@@ -40,7 +41,8 @@ public class TicketDAO {
             + "                t.createdAt,  "
             + "                t.editedAt,  "
             + "                t.closedAt,  "
-            + "                t.dueDate "
+            + "                t.dueDate, "
+            +"t.number"
             + "                FROM ticket t WHERE dueDate <= CURRENT_DATE() AND status != 'resolvido' ORDER BY dueDate ASC ";
     private static final String AVENCER_TICKET = "SELECT distinct t.idTicket, "
             + "                t.subject,  "
@@ -53,7 +55,8 @@ public class TicketDAO {
             + "                t.createdAt,  "
             + "                t.editedAt,  "
             + "                t.closedAt,  "
-            + "                t.dueDate "
+            + "                t.dueDate, "
+            +"t.number"
             + "                FROM ticket t WHERE status != 'resolvido' ORDER BY dueDate ASC ";
     private static final String APROPRIADO_TICKET = "select count(*) from ticket where responsible_id is not null AND responsible_id !=0 AND MONTH(createdAt) = MONTH(CURRENT_DATE())";
     private static final String TOTAL_TICKET = "select count(*) from ticket where MONTH(createdAt) = MONTH(CURRENT_DATE()) ";
@@ -75,6 +78,8 @@ public class TicketDAO {
             + "inner join user u on t.responsible_id = u.idUser\n" 
             + "where t.responsible_id is not null group by t.responsible_id ";
     private static final String COUNT = "select count(*) from ticket";
+    private static final String TICKET_COMMENTS = "SELECT idComment, user_id, createdAt, comment FROM comment where idComment=?";
+
 
     public TicketDAO() {
     }
@@ -118,7 +123,7 @@ public class TicketDAO {
                 ticket.setClosedAt(rs.getDate(12));
                 ticket.setDueDate(rs.getDate(13));
                 list.add(ticket);
-                System.out.println("PASSOU NO SELECT DO PROJETO");
+                System.out.println("PASSOU NO SELECT DO TICKET");
             }
 
             return list;
@@ -163,6 +168,7 @@ public class TicketDAO {
                 ticket.setSubject(rs.getString(2));
                 ticket.setDescription(rs.getString(3));
 
+                //id e nome do usuario solicitante
                 User userRequest = new User();
                 userRequest.setId(rs.getInt(4));
                 ticket.setRequester(userRequest);
@@ -170,11 +176,13 @@ public class TicketDAO {
                 ticket.setType(rs.getString(5));
                 ticket.setPriority(rs.getString(6));
                 ticket.setStatus(rs.getString(7));
-
+                
+                //pega o ususario projeto
                 Project project = new Project();
                 project.setId(rs.getInt(8));
                 ticket.setProject(project);
 
+                //pega o ususario responsavel
                 User userResponsible = new User();
                 userResponsible.setId(rs.getInt(9));
                 ticket.setResponsible(userResponsible);
@@ -182,6 +190,10 @@ public class TicketDAO {
                 ticket.setCreatedAt(rs.getDate(10));
                 ticket.setEditedAt(rs.getDate(11));
                 ticket.setDueDate(rs.getDate(12));
+                ticket.setClosedAt(rs.getDate(13));
+                ticket.setNumber(rs.getString(14));
+                               
+                System.out.println("PASSOU NO SELECT DO TICKET");
 
                 return ticket;
             }
@@ -570,6 +582,7 @@ public class TicketDAO {
                 ticket.setEditedAt(rs.getDate(10));
                 ticket.setClosedAt(rs.getDate(11));
                 ticket.setDueDate(rs.getDate(12));
+                ticket.setNumber(rs.getString(13));
                 list.add(ticket);
                 System.out.println("PASSOU NO SELECT DO TICKTES VENCIDOS");
             }
@@ -634,6 +647,7 @@ public class TicketDAO {
                 ticket.setEditedAt(rs.getDate(10));
                 ticket.setClosedAt(rs.getDate(11));
                 ticket.setDueDate(rs.getDate(12));
+                ticket.setNumber(rs.getString(13));
                 list.add(ticket);
             }
             System.out.println("PASSOU NO SELECT DO TICKTES A VENCER");

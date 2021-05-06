@@ -116,6 +116,17 @@ public class TicketResource {
                 .build();
     }
     
+    @GET
+    @Path("/{id}")
+    @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
+    public Response search(@PathParam("id") String id) throws Exception {
+        Ticket ticket = this.ticketController.search(Integer.parseInt(id));
+        return Response
+                .ok(Response.Status.FOUND)
+                .entity(ticket)
+                .build();
+    }
+    
     @DELETE
     @Path("/{id}")
     @Consumes(MediaType.APPLICATION_JSON + ";charset=utf-8")

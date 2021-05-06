@@ -17,6 +17,7 @@ import java.util.Date;
 import java.util.Formatter;
 import java.util.List;
 import javax.ws.rs.core.Response;
+import model.Comment;
 import model.Counter;
 import model.Ticket;
 import model.User;
@@ -29,18 +30,19 @@ public class TicketController {
 
     private final TicketDAO tDAO = new TicketDAO();
     UserController userController = new UserController();
+    CommentController commentController = new CommentController(); 
 
     public Ticket insert(Ticket ticket) throws Exception {
         try {
-            int contador = tDAO.countTickets()+1; 
-            if (contador < 100){
-                ticket.setNumber("TICKET-" +"00"+contador);
+            int contador = tDAO.countTickets() + 1;
+            if (contador < 100) {
+                ticket.setNumber("TICKET-" + "00" + contador);
             }
-            if (contador > 100){
-                ticket.setNumber("TICKET-" +"0"+contador);
+            if (contador > 100) {
+                ticket.setNumber("TICKET-" + "0" + contador);
             }
             tDAO.insertTicket(ticket);
-            
+
         } catch (Exception e) {
             throw new Exception("Não foi possivel cadastrar ticket");
         }
@@ -79,6 +81,19 @@ public class TicketController {
         }
 
         return tickets;
+    }
+
+    public Ticket search(Integer id) throws Exception {
+        try {
+            Ticket ticket = tDAO.search(id);
+            List<Comment> comments = commentController.searchCommentsByTicket(id);
+            if(!comments.isEmpty()){
+                ticket.setComment(comments);
+            }
+            return ticket;
+        } catch (Exception e) {
+            throw new Exception("Não foi possível localizar o ticket");
+        }
     }
 
     public List<Ticket> ticketsVencidos() {
