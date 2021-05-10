@@ -17,6 +17,7 @@ public class Project {
 
     private int id;
     private String name;
+    private String number; 
     private String description;
     private Boolean status;
     private Date createdAt; 
@@ -26,13 +27,14 @@ public class Project {
     public Project() {
     }
 
-    public Project(int id, String name, String description, Boolean status, Date createdAt, Date editedAt) {
+    public Project(int id, String name, String description, Boolean status, Date createdAt, Date editedAt, String number) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.status = status;
         this.createdAt = createdAt; 
         this.editedAt = editedAt;
+        this.number = number; 
     }
 
     public int getId() {
@@ -85,5 +87,12 @@ public class Project {
         this.createdAt = createdAt;
     }
 
-    
+    public String getNumber() {
+        return number;
+    }
+
+    public void setNumber(String number) {
+        this.number = number;
+    }
+   
 }

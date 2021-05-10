@@ -36,6 +36,13 @@ public class ProjectController {
 
     public Project insert(Project project) throws Exception {
         try {
+            int contador = projectDao.countProjects() + 1;
+            if (contador < 100) {
+                project.setNumber("PROJECT-" + "00" + contador);
+            }
+            if (contador > 100) {
+                project.setNumber("PROJECT-" + "0" + contador);
+            }
             projectDao.insertProject(project);
         } catch (Exception e) {
             throw new Exception("Não foi possivel cadastrar projeto");
