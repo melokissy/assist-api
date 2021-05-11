@@ -116,6 +116,18 @@ public class TicketResource {
                 .build();
     }
     
+    @PUT
+    @Path("ticket-resolve/{id}")
+    @Consumes(MediaType.APPLICATION_JSON + ";charset=utf-8")
+    @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
+    public Response resolveTicket(@PathParam("id")  String id, Ticket ticket) {
+        ticket = this.ticketController.resolveTicket(id);
+        return Response
+                .ok()
+                .entity(ticket)
+                .build();
+    }
+    
     @GET
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")

@@ -30,7 +30,7 @@ public class TicketController {
 
     private final TicketDAO tDAO = new TicketDAO();
     UserController userController = new UserController();
-    CommentController commentController = new CommentController(); 
+    CommentController commentController = new CommentController();
 
     public Ticket insert(Ticket ticket) throws Exception {
         try {
@@ -87,7 +87,7 @@ public class TicketController {
         try {
             Ticket ticket = tDAO.search(id);
             List<Comment> comments = commentController.searchCommentsByTicket(id);
-            if(!comments.isEmpty()){
+            if (!comments.isEmpty()) {
                 ticket.setComment(comments);
             }
             return ticket;
@@ -155,6 +155,12 @@ public class TicketController {
 
         //colocar data editat
         return this.tDAO.update(selectedTicket);
+    }
+
+    public Ticket resolveTicket(String id) {
+        
+        Ticket selectedTicket = this.tDAO.search(Integer.parseInt(id));
+        return this.tDAO.resolveTicket(selectedTicket);
     }
 
     public Ticket delete(Integer idTicket) {

@@ -26,6 +26,7 @@ public class TicketDAO {
     private static final String NEW_TICKET = "INSERT INTO ticket (subject, description, requester_id, type, priority, status, project_id, createdAt,dueDate,number) VALUES (?,?,?,?,?,?,?,?,?,?)";
     //private static final String SEARCH_BY_ID = "SELECT idTicket, subject, description, requester_id, type, priority,status,project_id,responsible_id, createdAt, editedAt,dueDate FROM ticket WHERE idTicket=?";
     private static final String EDIT_TICKET = "UPDATE ticket SET subject = ?, description = ?, requester_id = ?, type = ?, priority = ?, status = ?, project_id = ?, responsible_id = ?, editedAt = ?, dueDate=? WHERE idTicket = ?";
+    private static final String RESOLVE = "UPDATE ticket SET status = ?, closedAt=? WHERE idTicket = ?";
     private static final String SEARCH = "SELECT idTicket, subject , description, requester_id, type, priority, status, project_id, responsible_id, createdAt, editedAt,dueDate, closedAt, number FROM ticket WHERE idTicket=?";
     private static final String DELETE_TICKET = "DELETE FROM ticket WHERE idTicket=?";
     private static final String PENNDING_TICKET = "select count(*) from ticket where status = 'Pendente' AND MONTH(createdAt) = MONTH(CURRENT_DATE())";
@@ -43,7 +44,7 @@ public class TicketDAO {
             + "                t.closedAt,  "
             + "                t.dueDate, "
             +"t.number"
-            + "                FROM ticket t WHERE dueDate <= CURRENT_DATE() AND status != 'resolvido' ORDER BY dueDate ASC ";
+            + "                FROM ticket t WHERE dueDate <= CURRENT_DATE() AND status != 'Resolvido' ORDER BY dueDate ASC ";
     private static final String AVENCER_TICKET = "SELECT distinct t.idTicket, "
             + "                t.subject,  "
             + "                t.description,  "
@@ -337,6 +338,38 @@ public class TicketDAO {
 
         } catch (Exception ex) {
             System.out.println("[TICKET UPDATE] - " + ex.getMessage());
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+
+                if (prepared != null) {
+                    prepared.close();
+                }
+            } catch (Exception ex) {
+                System.out.println("Error close connections" + ex.getMessage());
+            }
+        }
+
+        return ticket;
+    }
+    
+    public Ticket resolveTicket(Ticket ticket) {
+        Connection conn = null;
+        PreparedStatement prepared = null;
+
+        try {
+            conn = new ConnectionFactory().getConnection();
+            prepared = conn.prepareStatement(RESOLVE);
+            prepared.setString(1, "Resolvido");
+            prepared.setDate(2, java.sql.Date.valueOf(java.time.LocalDate.now()));
+            prepared.setInt(3, ticket.getId());
+            prepared.executeUpdate();
+            return ticket;
+
+        } catch (Exception ex) {
+            System.out.println("[TICKET RESOLVE] - " + ex.getMessage());
         } finally {
             try {
                 if (conn != null) {
