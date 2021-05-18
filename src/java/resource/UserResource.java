@@ -51,6 +51,7 @@ public class UserResource {
                 .build();
     }       
     
+  
     @GET
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")

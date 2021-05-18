@@ -16,11 +16,12 @@ import model.User;
 
 public class UserDAO{
   
-    private static final String NEW_USER = "INSERT INTO user (name , password, email, status, userIcon, profile) VALUES (?,?,?,?,?,?)";
+    private static final String NEW_USER = "INSERT INTO user ( name , password, email, status, userIcon, profile) VALUES (?,?,?,?,?,?)";
     private static final String SEARCH_BY_ID = "SELECT idUser, name, email, status, profile FROM user WHERE idUser=?";
     private static final String USERS = "SELECT idUser, name, email, status, profile FROM user ORDER BY UPPER(name) ASC";
     private static final String EDIT_USER = "UPDATE user SET name = ?, email = ?, password = ?, status = ?, userIcon = ?, profile = ? WHERE idUser = ?";
     private static final String SEARCH = "SELECT idUser, name, email, status, profile FROM user WHERE idUser=?";
+    private static final String SEARCH_BY_NAME = "SELECT idUser, name, email, status, profile FROM user WHERE name=?";
     private static final String DELETE_USER = "DELETE FROM user WHERE idUser=?";
 
     public UserDAO(){}
@@ -124,19 +125,36 @@ public class UserDAO{
         ResultSet rs = null;
         try {
             conn = new ConnectionFactory().getConnection();
-            prepared = conn.prepareStatement(NEW_USER);            
+            prepared = conn.prepareStatement(NEW_USER, prepared.RETURN_GENERATED_KEYS);            
             prepared.setString(1, user.getName());
             prepared.setString(2, user.getPassword());
             prepared.setString(3, user.getEmail());
             prepared.setBoolean(4, user.getStatus());
             prepared.setString(5,user.getUserIcon());
             prepared.setString(6, user.getProfile());
-            prepared.executeUpdate();
-            rs = prepared.getGeneratedKeys();
+            
+            int affectedRows = prepared.executeUpdate();
 
-            if (rs.next()) {
-                user.setId(rs.getInt(1));
+            if (affectedRows == 0) {
+                throw new SQLException("Creating user failed, no rows affected.");
             }
+            
+            try (ResultSet generatedKeys = prepared.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    user.setId(generatedKeys.getInt(1));
+                }
+                else {
+                    throw new SQLException("Creating user failed, no ID obtained.");
+                }
+            }
+        
+            //prepared.executeUpdate();
+            //rs = prepared.getGeneratedKeys();
+
+            //if (rs.next()) {
+            //    user.setId(rs.getInt(1));
+            //}
+            
 //            rs = prepared;
         } catch (Exception ex) {
             System.out.println("[USER STORE] - " + ex.getMessage());
@@ -223,4 +241,49 @@ public class UserDAO{
 
     return user;
     }
+    
+     public User searchByName(String name) {
+        Connection conn = null;
+        PreparedStatement prepared = null;
+        ResultSet rs = null;
+
+        try {
+            conn = new ConnectionFactory().getConnection();
+            prepared = conn.prepareStatement(SEARCH_BY_NAME);
+            prepared.setString(1, name);
+            rs = prepared.executeQuery();
+
+            if (rs.next()) {
+                User user = new User();
+                user.setId(rs.getInt(1));
+                user.setName(rs.getString(2));
+                user.setEmail(rs.getString(3));
+                user.setStatus(rs.getBoolean(4));
+                user.setProfile(rs.getString(5));
+                return user;
+            }
+
+        } catch (Exception ex) {
+            System.out.println("[SEARCH USER BY NAME] - " + ex.getMessage());
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+
+                if (prepared != null) {
+                    prepared.close();
+                }
+
+                if (rs != null) {
+                    rs.close();
+                }
+
+            } catch (Exception ex) {
+                System.out.println("Error Close connections " + ex.getMessage());
+            }
+        }
+        return null;
+
+    } 
 }

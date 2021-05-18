@@ -23,6 +23,10 @@ public class UserController {
         return this.userDao.search(idUser);
     }
 
+    public User getUserByName(User user) {
+        return this.userDao.searchByName(user.getName());
+    }
+        
     public User insert(User user) throws Exception {
         try {
             user.setStatus(true);

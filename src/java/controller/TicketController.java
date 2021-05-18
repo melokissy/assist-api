@@ -30,10 +30,25 @@ public class TicketController {
 
     private final TicketDAO tDAO = new TicketDAO();
     UserController userController = new UserController();
-    CommentController commentController = new CommentController();
+    CommentController commentController = new CommentController(); 
 
     public Ticket insert(Ticket ticket) throws Exception {
         try {
+            User user = new User();
+            User userRequester = new User();
+            User newUser = new User();
+            user = ticket.getRequester(); 
+            System.out.println("user requester: " +user);
+            userRequester = userController.getUserByName(user); 
+            if (userRequester != null && userRequester.getName().equals(user.getName())) {
+                ticket.getRequester().setId(userRequester.getId());
+                
+            }else{
+                user.setPassword("123");
+                newUser = userController.insert(user);
+                ticket.getRequester().setId(newUser.getId());
+            }
+            
             int contador = tDAO.countTickets() + 1;
             if (contador < 100) {
                 ticket.setNumber("TICKET-" + "00" + contador);
@@ -41,6 +56,7 @@ public class TicketController {
             if (contador > 100) {
                 ticket.setNumber("TICKET-" + "0" + contador);
             }
+            
             tDAO.insertTicket(ticket);
 
         } catch (Exception e) {

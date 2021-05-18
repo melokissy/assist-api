@@ -269,7 +269,6 @@ public class TicketDAO {
             prepared = conn.prepareStatement(NEW_TICKET, Statement.RETURN_GENERATED_KEYS);
             prepared.setString(1, ticket.getSubject());
             prepared.setString(2, ticket.getDescription());
-            // prepared.setInt(3, ticket.getRequester().getId());
 
             //id e nome do usuario solicitante           
             prepared.setInt(3, ticket.getRequester().getId());
@@ -280,7 +279,6 @@ public class TicketDAO {
             //projeto
             prepared.setInt(7, ticket.getProject().getId());
             //pega o ususario responsavel
-            //prepared.setInt(8, ticket.getResponsible().getId());
             prepared.setDate(8, java.sql.Date.valueOf(java.time.LocalDate.now()));
             prepared.setDate(9, java.sql.Date.valueOf(java.time.LocalDate.now().plusDays(8)));
             prepared.setString(10, ticket.getNumber());
@@ -292,7 +290,7 @@ public class TicketDAO {
             if (rs.next()) {
                 ticket.setId(rs.getInt(1));
             }
-//            rs = prepared;
+
         } catch (Exception ex) {
             System.out.println("[TICKET STORE] - " + ex.getMessage());
         } finally {
