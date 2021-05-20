@@ -16,12 +16,12 @@ import model.User;
 
 public class UserDAO{
   
-    private static final String NEW_USER = "INSERT INTO user ( name , password, email, status, userIcon, profile,cpf) VALUES (?,?,?,?,?,?,?)";
-    private static final String SEARCH_BY_ID = "SELECT idUser, name, email, status, profile,cpf FROM user WHERE idUser=?";
-    private static final String USERS = "SELECT idUser, name, email, status, profile,cpf FROM user ORDER BY UPPER(name) ASC";
-    private static final String EDIT_USER = "UPDATE user SET name = ?, email = ?, password = ?, status = ?, userIcon = ?, profile = ?, cpf=? WHERE idUser = ?";
-    private static final String SEARCH = "SELECT idUser, name, email, status, profile,cpf FROM user WHERE idUser=?";
-    private static final String SEARCH_BY_CPF = "SELECT idUser, name, email, status, profile,cpf FROM user WHERE cpf=?";
+    private static final String NEW_USER = "INSERT INTO user ( name , password, email, status, userIcon, profile,cpf,setor) VALUES (?,?,?,?,?,?,?,?)";
+    private static final String SEARCH_BY_ID = "SELECT idUser, name, email, status, profile,cpf,setor FROM user WHERE idUser=?";
+    private static final String USERS = "SELECT idUser, name, email, status, profile,cpf,setor FROM user ORDER BY UPPER(name) ASC";
+    private static final String EDIT_USER = "UPDATE user SET name = ?, email = ?, password = ?, status = ?, userIcon = ?, profile = ?, cpf=?, setor=? WHERE idUser = ?";
+    private static final String SEARCH = "SELECT idUser, name, email, status, profile,cpf,setor FROM user WHERE idUser=?";
+    private static final String SEARCH_BY_CPF = "SELECT idUser, name, email, status, profile,cpf,setor FROM user WHERE cpf=?";
     private static final String DELETE_USER = "DELETE FROM user WHERE idUser=?";
 
     public UserDAO(){}
@@ -47,6 +47,7 @@ public class UserDAO{
                 user.setStatus(rs.getBoolean(4));
                 user.setProfile(rs.getString(5));
                 user.setCpf(rs.getString(6));
+                user.setSetor(rs.getString(7));
                 list.add(user); 
             }
 
@@ -93,6 +94,7 @@ public class UserDAO{
                 user.setStatus(rs.getBoolean(4));
                 user.setProfile(rs.getString(5));
                 user.setCpf(rs.getString(6));
+                user.setSetor(rs.getString(7));
                 return user;
             }
 
@@ -135,6 +137,7 @@ public class UserDAO{
             prepared.setString(5,user.getUserIcon());
             prepared.setString(6, user.getProfile());
             prepared.setString(7, user.getCpf());
+            prepared.setString(8, user.getSetor());
             
             int affectedRows = prepared.executeUpdate();
 
@@ -187,7 +190,8 @@ public class UserDAO{
             prepared.setString(5, user.getUserIcon());
             prepared.setString(6, user.getProfile());
             prepared.setString(7, user.getCpf());
-            prepared.setInt(8, user.getId()); 
+            prepared.setString(8, user.getSetor());
+            prepared.setInt(9, user.getId()); 
             prepared.executeUpdate();
             return user;
         } catch (Exception ex) {
@@ -257,6 +261,7 @@ public class UserDAO{
                 user.setStatus(rs.getBoolean(4));
                 user.setProfile(rs.getString(5));
                 user.setCpf(rs.getString(6));
+                user.setSetor(rs.getString(7));
                 return user;
             }
 

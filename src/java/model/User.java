@@ -18,10 +18,11 @@ public class User {
     private String userIcon;
     private String profile; 
     private String cpf; 
+    private String setor; 
 
     public User(){};
 
-    public User(String name, String password, String email, Boolean status, String userIcon, String profile, String cpf) {
+    public User(String name, String password, String email, Boolean status, String userIcon, String profile, String cpf, String setor) {
         this.name = name;
         this.password = password;
         this.email = email;
@@ -29,6 +30,8 @@ public class User {
         this.userIcon = userIcon;
         this.profile = profile; 
         this.cpf = cpf;
+        this.setor = setor;
+
     }
 
     public Integer getId() {
@@ -94,5 +97,12 @@ public class User {
     public void setCpf(String cpf) {
         this.cpf = cpf;
     }
-           
+        
+    public String getSetor() {
+        return setor;
+    }
+
+    public void setSetor(String setor) {
+        this.setor = setor;
+    }
 }
