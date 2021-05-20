@@ -17,16 +17,18 @@ public class User {
     private Boolean status;
     private String userIcon;
     private String profile; 
+    private String cpf; 
 
     public User(){};
 
-    public User(String name, String password, String email, Boolean status, String userIcon, String profile) {
+    public User(String name, String password, String email, Boolean status, String userIcon, String profile, String cpf) {
         this.name = name;
         this.password = password;
         this.email = email;
         this.status = status;
         this.userIcon = userIcon;
         this.profile = profile; 
+        this.cpf = cpf;
     }
 
     public Integer getId() {
@@ -84,5 +86,13 @@ public class User {
     public void setProfile(String profile) {
         this.profile = profile;
     }
-    
+
+    public String getCpf() {
+        return cpf;
+    }
+
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
+    }
+           
 }

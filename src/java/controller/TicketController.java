@@ -38,13 +38,14 @@ public class TicketController {
             User userRequester = new User();
             User newUser = new User();
             user = ticket.getRequester(); 
-            System.out.println("user requester: " +user);
             userRequester = userController.getUserByName(user); 
+            
             if (userRequester != null && userRequester.getName().equals(user.getName())) {
                 ticket.getRequester().setId(userRequester.getId());
                 
             }else{
                 user.setPassword("123");
+                user.setProfile("Cliente");
                 newUser = userController.insert(user);
                 ticket.getRequester().setId(newUser.getId());
             }

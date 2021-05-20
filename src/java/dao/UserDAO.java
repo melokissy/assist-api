@@ -16,12 +16,12 @@ import model.User;
 
 public class UserDAO{
   
-    private static final String NEW_USER = "INSERT INTO user ( name , password, email, status, userIcon, profile) VALUES (?,?,?,?,?,?)";
-    private static final String SEARCH_BY_ID = "SELECT idUser, name, email, status, profile FROM user WHERE idUser=?";
-    private static final String USERS = "SELECT idUser, name, email, status, profile FROM user ORDER BY UPPER(name) ASC";
-    private static final String EDIT_USER = "UPDATE user SET name = ?, email = ?, password = ?, status = ?, userIcon = ?, profile = ? WHERE idUser = ?";
-    private static final String SEARCH = "SELECT idUser, name, email, status, profile FROM user WHERE idUser=?";
-    private static final String SEARCH_BY_NAME = "SELECT idUser, name, email, status, profile FROM user WHERE name=?";
+    private static final String NEW_USER = "INSERT INTO user ( name , password, email, status, userIcon, profile,cpf) VALUES (?,?,?,?,?,?,?)";
+    private static final String SEARCH_BY_ID = "SELECT idUser, name, email, status, profile,cpf FROM user WHERE idUser=?";
+    private static final String USERS = "SELECT idUser, name, email, status, profile,cpf FROM user ORDER BY UPPER(name) ASC";
+    private static final String EDIT_USER = "UPDATE user SET name = ?, email = ?, password = ?, status = ?, userIcon = ?, profile = ?, cpf=? WHERE idUser = ?";
+    private static final String SEARCH = "SELECT idUser, name, email, status, profile,cpf FROM user WHERE idUser=?";
+    private static final String SEARCH_BY_NAME = "SELECT idUser, name, email, status, profile,cpf FROM user WHERE name=?";
     private static final String DELETE_USER = "DELETE FROM user WHERE idUser=?";
 
     public UserDAO(){}
@@ -46,6 +46,7 @@ public class UserDAO{
                 user.setEmail(rs.getString(3));
                 user.setStatus(rs.getBoolean(4));
                 user.setProfile(rs.getString(5));
+                user.setCpf(rs.getString(6));
                 list.add(user); 
             }
 
@@ -91,6 +92,7 @@ public class UserDAO{
                 user.setEmail(rs.getString(3));
                 user.setStatus(rs.getBoolean(4));
                 user.setProfile(rs.getString(5));
+                user.setCpf(rs.getString(6));
                 return user;
             }
 
@@ -132,6 +134,7 @@ public class UserDAO{
             prepared.setBoolean(4, user.getStatus());
             prepared.setString(5,user.getUserIcon());
             prepared.setString(6, user.getProfile());
+            prepared.setString(7, user.getCpf());
             
             int affectedRows = prepared.executeUpdate();
 
@@ -147,15 +150,7 @@ public class UserDAO{
                     throw new SQLException("Creating user failed, no ID obtained.");
                 }
             }
-        
-            //prepared.executeUpdate();
-            //rs = prepared.getGeneratedKeys();
 
-            //if (rs.next()) {
-            //    user.setId(rs.getInt(1));
-            //}
-            
-//            rs = prepared;
         } catch (Exception ex) {
             System.out.println("[USER STORE] - " + ex.getMessage());
         } finally {
@@ -191,7 +186,8 @@ public class UserDAO{
             prepared.setBoolean(4, user.getStatus());
             prepared.setString(5, user.getUserIcon());
             prepared.setString(6, user.getProfile());
-            prepared.setInt(7, user.getId()); 
+            prepared.setString(7, user.getCpf());
+            prepared.setInt(8, user.getId()); 
             prepared.executeUpdate();
             return user;
         } catch (Exception ex) {
@@ -260,6 +256,7 @@ public class UserDAO{
                 user.setEmail(rs.getString(3));
                 user.setStatus(rs.getBoolean(4));
                 user.setProfile(rs.getString(5));
+                user.setCpf(rs.getString(6));
                 return user;
             }
 
