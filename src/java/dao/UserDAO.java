@@ -21,7 +21,7 @@ public class UserDAO{
     private static final String USERS = "SELECT idUser, name, email, status, profile,cpf FROM user ORDER BY UPPER(name) ASC";
     private static final String EDIT_USER = "UPDATE user SET name = ?, email = ?, password = ?, status = ?, userIcon = ?, profile = ?, cpf=? WHERE idUser = ?";
     private static final String SEARCH = "SELECT idUser, name, email, status, profile,cpf FROM user WHERE idUser=?";
-    private static final String SEARCH_BY_NAME = "SELECT idUser, name, email, status, profile,cpf FROM user WHERE name=?";
+    private static final String SEARCH_BY_CPF = "SELECT idUser, name, email, status, profile,cpf FROM user WHERE cpf=?";
     private static final String DELETE_USER = "DELETE FROM user WHERE idUser=?";
 
     public UserDAO(){}
@@ -238,15 +238,15 @@ public class UserDAO{
     return user;
     }
     
-     public User searchByName(String name) {
+     public User searchByName(String cpf) {
         Connection conn = null;
         PreparedStatement prepared = null;
         ResultSet rs = null;
 
         try {
             conn = new ConnectionFactory().getConnection();
-            prepared = conn.prepareStatement(SEARCH_BY_NAME);
-            prepared.setString(1, name);
+            prepared = conn.prepareStatement(SEARCH_BY_CPF);
+            prepared.setString(1, cpf);
             rs = prepared.executeQuery();
 
             if (rs.next()) {

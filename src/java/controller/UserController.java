@@ -24,7 +24,7 @@ public class UserController {
     }
 
     public User getUserByName(User user) {
-        return this.userDao.searchByName(user.getName());
+        return this.userDao.searchByName(user.getCpf());
     }
         
     public User insert(User user) throws Exception {

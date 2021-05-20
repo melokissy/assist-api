@@ -40,7 +40,7 @@ public class TicketController {
             user = ticket.getRequester(); 
             userRequester = userController.getUserByName(user); 
             
-            if (userRequester != null && userRequester.getName().equals(user.getName())) {
+            if (userRequester != null && userRequester.getCpf().equals(user.getCpf())) {
                 ticket.getRequester().setId(userRequester.getId());
                 
             }else{
