@@ -120,7 +120,7 @@ public class TicketResource {
     @Path("ticket-resolve/{id}")
     @Consumes(MediaType.APPLICATION_JSON + ";charset=utf-8")
     @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
-    public Response resolveTicket(@PathParam("id")  String id, Ticket ticket) {
+    public Response resolveTicket(@PathParam("id")  String id, Ticket ticket) throws Exception {
         ticket = this.ticketController.resolveTicket(id);
         return Response
                 .ok()

@@ -5,10 +5,12 @@
  */
 package controller;
 
+import Autenticacao.JWTTokenUtils;
+import DTO.UserDTO;
+import dao.TokenDAO;
 import dao.UserDAO;
-import java.util.Formatter;
 import java.util.List;
-import javax.ws.rs.core.Response;
+import model.Token;
 import model.User;
 
 /**
@@ -18,6 +20,7 @@ import model.User;
 public class UserController {
 
     private final UserDAO userDao = new UserDAO();
+    private final TokenDAO tokenDAO = new TokenDAO(); 
 
     public User getUserById(Integer idUser) {
         return this.userDao.search(idUser);
@@ -25,6 +28,19 @@ public class UserController {
 
     public User getUserByName(User user) {
         return this.userDao.searchByName(user.getCpf());
+    }
+    
+      public UserDTO login(User user) {        
+        user = this.userDao.login(user);
+        if(user != null){
+            String token = (new JWTTokenUtils()).generateToken(user);
+                     
+            Token token1 = tokenDAO.insertToken(token, user.getId());
+            
+            UserDTO userDTO = new UserDTO(user.getEmail(),user.getProfile(),token,user.getName(), user.getId());
+            return userDTO;
+        }
+        return null;
     }
         
     public User insert(User user) throws Exception {
@@ -41,6 +57,14 @@ public class UserController {
     public List<User> users() throws Exception {
         try {
             return userDao.users();
+        } catch (Exception e) {
+            throw new Exception("Não foi possível listar usuários");
+        }
+    }
+    
+    public List<User> usersByProfile() throws Exception {
+        try {
+            return userDao.usersByProfile();
         } catch (Exception e) {
             throw new Exception("Não foi possível listar usuários");
         }

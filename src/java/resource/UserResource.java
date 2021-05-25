@@ -7,6 +7,9 @@ package resource;
 
 import controller.UserController;
 import java.util.List;
+import javax.annotation.security.RolesAllowed;
+import javax.annotation.security.RunAs;
+import javax.ejb.Stateless;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -28,7 +31,7 @@ import model.User;
  */
 @Path("users")
 public class UserResource {
-      @Context
+    @Context
     private UriInfo context;
 
     private final UserController userController;
@@ -40,6 +43,7 @@ public class UserResource {
         this.userController = new UserController();
     }
     
+//    @RolesAllowed({"administrador"})
     @GET
     @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
     public Response index() throws Exception {
@@ -49,9 +53,22 @@ public class UserResource {
                 .ok()
                 .entity(list)
                 .build();
-    }       
+    }
     
-  
+//    @RolesAllowed({"administrador"})
+    @GET
+    @Path("/by-profile")
+    @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
+    public Response usersByProfile() throws Exception {
+        List<User> users = this.userController.usersByProfile();
+        GenericEntity<List<User>> list = new GenericEntity<List<User>>(users) {};
+        return Response
+                .ok()
+                .entity(list)
+                .build();
+    } 
+    
+//    @RolesAllowed({"administrador"})
     @GET
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
@@ -64,7 +81,7 @@ public class UserResource {
                 .build();
     }  
 
-    
+//    @RolesAllowed({"administrador"})
     @POST
     @Consumes(MediaType.APPLICATION_JSON + ";charset=utf-8")
     @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
@@ -77,6 +94,7 @@ public class UserResource {
                 .build();
     }  
     
+//    @RolesAllowed({"administrador"})
     @PUT
     @Path("/{id}")
     @Consumes(MediaType.APPLICATION_JSON + ";charset=utf-8")
@@ -90,6 +108,7 @@ public class UserResource {
                 .build();
     }
     
+//    @RolesAllowed({"administrador"})
     @DELETE
     @Path("/{id}")
     @Consumes(MediaType.APPLICATION_JSON + ";charset=utf-8")

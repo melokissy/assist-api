@@ -31,6 +31,9 @@ public class TicketController {
     private final TicketDAO tDAO = new TicketDAO();
     UserController userController = new UserController();
     CommentController commentController = new CommentController(); 
+    
+    private String status = "Resolvido";  
+
 
     public Ticket insert(Ticket ticket) throws Exception {
         try {
@@ -174,10 +177,18 @@ public class TicketController {
         return this.tDAO.update(selectedTicket);
     }
 
-    public Ticket resolveTicket(String id) {
-        
-        Ticket selectedTicket = this.tDAO.search(Integer.parseInt(id));
-        return this.tDAO.resolveTicket(selectedTicket);
+    public Ticket resolveTicket(String id) throws Exception {
+        try {
+            Ticket selectedTicket = this.tDAO.search(Integer.parseInt(id));
+
+            if (!selectedTicket.getStatus().equals("Resolvido")) {
+                return this.tDAO.resolveTicket(selectedTicket);
+            }
+            return selectedTicket;
+        } catch (Exception e) {
+            throw new Exception("Ticket já se encontra resolvido");
+        }
+
     }
 
     public Ticket delete(Integer idTicket) {
