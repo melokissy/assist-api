@@ -22,12 +22,13 @@ public class Project {
     private Boolean status;
     private Date createdAt; 
     private Date editedAt; 
+    private User responsible; 
     //private User supervisor;
 
     public Project() {
     }
 
-    public Project(int id, String name, String description, Boolean status, Date createdAt, Date editedAt, String number) {
+    public Project(int id, String name, String description, Boolean status, Date createdAt, Date editedAt, String number, User responsible) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -35,6 +36,7 @@ public class Project {
         this.createdAt = createdAt; 
         this.editedAt = editedAt;
         this.number = number; 
+        this.responsible = responsible;
     }
 
     public int getId() {
@@ -94,5 +96,15 @@ public class Project {
     public void setNumber(String number) {
         this.number = number;
     }
+
+    public User getResponsible() {
+        return responsible;
+    }
+
+    public void setResponsible(User responsible) {
+        this.responsible = responsible;
+    }
+    
+    
    
 }

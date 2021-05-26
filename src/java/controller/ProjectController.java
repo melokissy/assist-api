@@ -9,6 +9,7 @@ import dao.ProjectDAO;
 import java.util.List;
 import model.Project;
 import model.Ticket;
+import model.User;
 
 /**
  *
@@ -17,6 +18,7 @@ import model.Ticket;
 public class ProjectController {
 
     private final ProjectDAO projectDao = new ProjectDAO();
+    private final UserController userController = new UserController(); 
 
     public List<Project> projects() throws Exception {
         try {
@@ -28,7 +30,10 @@ public class ProjectController {
 
     public Project search(Integer id) throws Exception {
         try {
-            return projectDao.search(id);
+            Project project = projectDao.search(id);
+            User userResponsible = userController.getUserById(project.getResponsible().getId());
+            project.setResponsible(userResponsible);
+            return project; 
         } catch (Exception e) {
             throw new Exception("Não foi possível localizar o projeto");
         }

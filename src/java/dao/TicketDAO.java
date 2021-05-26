@@ -124,7 +124,6 @@ public class TicketDAO {
                 ticket.setClosedAt(rs.getDate(12));
                 ticket.setDueDate(rs.getDate(13));
                 list.add(ticket);
-                System.out.println("PASSOU NO SELECT DO TICKET");
             }
 
             return list;
@@ -194,8 +193,6 @@ public class TicketDAO {
                 ticket.setClosedAt(rs.getDate(13));
                 ticket.setNumber(rs.getString(14));
                                
-                System.out.println("PASSOU NO SELECT DO TICKET");
-
                 return ticket;
             }
 

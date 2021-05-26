@@ -25,11 +25,11 @@ public class ProjectDAO {
 
     //passar tickets null quando criar novo projeto
 //    private static final String PROJECTS = "select p.idProject, t.idTicket, p.name, p.description, p.status, p.createdAt, p.editedAt,tsubject, t.description, t.type FROM project p JOIN ticket t ON t.project = p.idProject ORDER BY p.idProject DESC;";
-    private static final String NEW_PROJECT = "INSERT INTO project (name, description, status, createdAt,number) VALUES (?,?,?,?,?)";
-    private static final String SEARCH_BY_ID = "SELECT idProject, name, description, status, createdAt, editedAt FROM project WHERE idProject=?";
+    private static final String NEW_PROJECT = "INSERT INTO project (name, description, status, createdAt,number,responsible) VALUES (?,?,?,?,?,?)";
+    private static final String SEARCH_BY_ID = "SELECT idProject, name, description, status, createdAt, editedAt,responsible FROM project WHERE idProject=?";
     private static final String PROJECTS = "SELECT * FROM project order by createdAt desc";
-    private static final String EDIT_PROJECT = "UPDATE project SET name = ?, description = ?, status = ?, editedAt = ? WHERE idProject = ?";
-    private static final String SEARCH = "SELECT idProject, name, description, status, createdAt, editedAt,number FROM project WHERE idProject=?";
+    private static final String EDIT_PROJECT = "UPDATE project SET name = ?, description = ?, status = ?, editedAt = ?, responsible=? WHERE idProject = ?";
+    private static final String SEARCH = "SELECT idProject, name, description, status, createdAt, editedAt,number,responsible FROM project WHERE idProject=?";
     private static final String DELETE_PROJECT = "DELETE FROM project WHERE idProject=?";
     private static final String COUNT = "SELECT COUNT(*) FROM PROJECT";
 
@@ -57,6 +57,10 @@ public class ProjectDAO {
                 project.setCreatedAt(rs.getDate(5));
                 project.setEditedAt(rs.getDate(6));
                 project.setNumber(rs.getString(7));
+                //pega o ususario responsavel
+                User userResponsible = new User();
+                userResponsible.setId(rs.getInt(8));
+                project.setResponsible(userResponsible);                
                 list.add(project);
             }
 
@@ -96,9 +100,11 @@ public class ProjectDAO {
             prepared.setBoolean(3, project.getStatus());
             prepared.setDate(4, java.sql.Date.valueOf(java.time.LocalDate.now()));
             prepared.setString(5, project.getNumber());
+            prepared.setInt(6, project.getResponsible().getId());
+
             prepared.executeUpdate();
             rs = prepared.getGeneratedKeys();
-            System.out.println("PASSOU DO INSERT");
+            
             if (rs.next()) {
                 project.setId(rs.getInt(1));
             }
@@ -146,6 +152,11 @@ public class ProjectDAO {
                 project.setCreatedAt(rs.getDate(5));
                 project.setEditedAt(rs.getDate(6));
                 project.setNumber(rs.getString(7));
+                //pega o ususario responsavel
+                User userResponsible = new User();
+                userResponsible.setId(rs.getInt(8));
+                project.setResponsible(userResponsible);
+
                 return project;
             }
 
@@ -211,11 +222,12 @@ public class ProjectDAO {
             prepared.setString(2, project.getDescription());
             prepared.setBoolean(3, project.getStatus());
             prepared.setDate(4, java.sql.Date.valueOf(java.time.LocalDate.now()));
-            prepared.setInt(5, project.getId()); 
+            prepared.setString(5, project.getResponsible().getName());
+            prepared.setInt(6, project.getId()); 
 
-          
             prepared.executeUpdate();
             return project;
+            
         } catch (Exception ex) {
             System.out.println("[USER UPDATE] - " + ex.getMessage());
         } finally {
