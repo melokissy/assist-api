@@ -222,14 +222,14 @@ public class ProjectDAO {
             prepared.setString(2, project.getDescription());
             prepared.setBoolean(3, project.getStatus());
             prepared.setDate(4, java.sql.Date.valueOf(java.time.LocalDate.now()));
-            prepared.setString(5, project.getResponsible().getName());
+            prepared.setInt(5, project.getResponsible().getId());
             prepared.setInt(6, project.getId()); 
 
             prepared.executeUpdate();
             return project;
             
         } catch (Exception ex) {
-            System.out.println("[USER UPDATE] - " + ex.getMessage());
+            System.out.println("[PROJECT UPDATE] - " + ex.getMessage());
         } finally {
             try {
                 if (conn != null) {

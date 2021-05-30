@@ -18,7 +18,7 @@ import model.User;
 public class ProjectController {
 
     private final ProjectDAO projectDao = new ProjectDAO();
-    private final UserController userController = new UserController(); 
+    private final UserController userController = new UserController();
 
     public List<Project> projects() throws Exception {
         try {
@@ -33,7 +33,7 @@ public class ProjectController {
             Project project = projectDao.search(id);
             User userResponsible = userController.getUserById(project.getResponsible().getId());
             project.setResponsible(userResponsible);
-            return project; 
+            return project;
         } catch (Exception e) {
             throw new Exception("Não foi possível localizar o projeto");
         }
@@ -57,7 +57,22 @@ public class ProjectController {
 
     public Project update(Project project) throws Exception {
         try {
-            projectDao.update(project);
+            Project selectedProject = this.projectDao.search(project.getId());
+
+            if (project.getResponsible() != null) {
+                selectedProject.setResponsible(project.getResponsible());
+            }
+            if (project.getName() != null) {
+                selectedProject.setName(project.getName());
+            }
+            if (project.getStatus()!= null) {
+                selectedProject.setStatus(project.getStatus());
+            }
+            if (project.getDescription()!= null) {
+                selectedProject.setDescription(project.getDescription());
+            }
+            projectDao.update(selectedProject);
+
         } catch (Exception e) {
             throw new Exception("Não foi possivel cadastrar projeto");
         }

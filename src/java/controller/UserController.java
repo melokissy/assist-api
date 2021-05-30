@@ -92,7 +92,10 @@ public class UserController {
         if (user.getProfile()!= selectedUser.getProfile()){
             selectedUser.setProfile(user.getProfile());
         }           
-        
+                
+        if (user.getCpf()!= selectedUser.getCpf()){
+            selectedUser.setCpf(user.getCpf());
+        }    
         return this.userDao.update(selectedUser);
     }
 
