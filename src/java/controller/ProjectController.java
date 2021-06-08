@@ -31,6 +31,9 @@ public class ProjectController {
     public Project search(Integer id) throws Exception {
         try {
             Project project = projectDao.search(id);
+            if(project == null){
+               return project;
+            }
             User userResponsible = userController.getUserById(project.getResponsible().getId());
             project.setResponsible(userResponsible);
             return project;

@@ -56,10 +56,17 @@ public class ProjectResource {
     @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
     public Response search(@PathParam("id") String id) throws Exception {
         Project project = this.projectController.search(Integer.parseInt(id));
-        return Response
+        if(project != null){
+             return Response
                 .ok(Response.Status.FOUND)
                 .entity(project)
+                .build();            
+        }
+         return Response
+                .status(Response.Status.NOT_FOUND)
+                 .entity(null)
                 .build();
+       
     }
 
     @POST
